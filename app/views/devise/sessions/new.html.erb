@@ -1,0 +1,41 @@
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="centered-content">
+    
+    <div class="logo">
+      <a href="/" style="text-decoration: none; font-size: 2em;">NoteIn</a>
+    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="ui attached message">
+      <div class="header">
+         Log in to your account
+      </div>
+    </div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "ui form attached fluid segment"}) do |f| %>
+      <div class="field">
+        <label>Username</label>
+        <%= f.text_field :username, autofocus: true %>
+      </div>
+      <div class="field">
+        
+        <label>Password</label>
+        <%= f.password_field :password, autocomplete: "off" %>
+      </div>
+      <%= f.submit "Log in", class: "ui positive submit button" %>
+      
+    <% end %>
+    
+    <% if alert %>
+      <div class="ui attached message warning">
+        <%= alert %>
+      </div>
+     <% end %>
+    
+    <p>&nbsp;</p>
+      <a href="/users/password/new">Forgot password?</a>
+  
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<style>
+.outer-container {
+  display: table;
+  width: 100%;
+  height: 66%;
+}
+
+.inner-container {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.centered-content {
+  display: inline-block;
+  padding: 20px;
+}
+
+.message, .header, .field, .form {
+  text-align: left;
+}
+</style>
+
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="centered-content">
+    
+    <div class="logo">
+      <h2>Here is your new password!</h2>
+    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="ui form attached fluid segment" style="width: 300px; text-align: left;">
+      <div class="header">
+         <%= @new_pass %>
+      </div>
+    </div>
+     <p>&nbsp;</p>
+    
+      <h3><a href="/users/sign_in">Now log in again</a></h3>
+   
+    </div>
+  </div>
+</div>

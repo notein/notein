@@ -1,0 +1,5 @@
+<% if current_user %>
+  <%= render partial: "home/stream" %>
+<% else %>
+  <%= render partial: "home/landing" %>
+<% end %>

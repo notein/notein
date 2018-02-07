@@ -1,0 +1,23 @@
+            <div class="header item left aligned">
+              <a href="/" class="ui transparent basic button" style="box-shadow: none; font-size: 1.2em; background-color: transparent;">
+              	<b>NoteIn</b>
+              </a>
+              <% if current_user %>
+			        <a href="/<%= current_user.username %>" class="ui transparent basic button" style="font-size: 1.2em; box-shadow: none; padding-left: 0;"><%= current_user.username %>
+                
+                <% if current_site?("memos", "show") %>
+                  &nbsp;<small><%= time_ago_in_words(@memo.updated_at) %> ago</small>
+                <% end %>
+                
+              </a>
+              <% elsif params[:username] %>
+			        <div class="ui avatar image" style="background-color: #<%= @user.avatar %>"></div>
+                <a href="/<%= params[:username] %>" class="ui transparent basic button" style="font-size: 1.2em; box-shadow: none; padding-left: 0;"><%= params[:username] %>
+                
+                <% if current_site?("memos", "show") %>
+                  &nbsp;<small><%= time_ago_in_words(@memo.updated_at) %> ago</small>
+                <% end %>
+                
+              </a>
+              <% end %>
+            </div>

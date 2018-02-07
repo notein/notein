@@ -1,0 +1,29 @@
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="centered-content">
+    
+    <div class="logo">
+      <a href="/" style="text-decoration: none; font-size: 2em;">NoteIn</a>
+    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="ui attached message">
+      <div class="header">
+         Please enter your recovery key!
+      </div>
+    </div>
+    <%= form_for "", url: "/users/recover?user_username=#{params[:user_username]}", html: { method: :post, class: "ui form attached fluid segment" } do |f| %>
+
+      <div class="field">
+        <%= f.text_field "user_token", autofocus: true %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Reset my password", class: "ui positive submit button" %>
+      </div>
+    <% end %>
+    
+    </div>
+  </div>
+</div>

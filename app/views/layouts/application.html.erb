@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NoteIn</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application' %>
+    <%= javascript_include_tag 'application' %>
+
+  </head>
+
+  <body>
+    
+    <% if current_site?("memos", "new") or current_site?("memos", "edit") %>
+ 
+      <%= render partial: "shared/editor_menu" %>
+     
+    <% elsif not (current_site?("home", "index") and current_user.nil?) %>
+    
+      <%= render partial: "shared/app_menu" %>
+    
+    <% end %>
+    
+    <div class="distance"></div>
+    
+    <%= yield %>
+
+  </body>
+</html>

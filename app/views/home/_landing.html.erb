@@ -1,0 +1,78 @@
+<style>
+
+.css1 { font-size: 1.0em; }
+.css2 { font-size: 1.2em; }
+.css3 { font-size: 1.4em; }
+.css4 { font-size: 1.6em; }
+
+body {
+  background: #fafafa;
+}
+
+.ui.form.card {
+  padding: 15px;
+  
+}
+
+</style>
+
+
+
+
+<div class="ui text container">
+
+<p>&nbsp;</p>
+
+<div class="ui grid">
+  <div class="ten wide column">
+
+    <h1>Take notes better, together!</h1>
+
+    <h3>Share your conference notes, book summaries, lecture notes, awesome lists, ...</h3>
+
+    <p><b>NoteIn</b> is a free, note-taking and sharing site for people who value openness and quality.</p>
+
+    <p>There are no ads, no third-party tracking, and no email required to sign up.</p>
+  </div>
+
+  <div class="six wide column">
+  
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "ui form raised card", onkeypress: "return event.keyCode != 13;"}) do |f| %>
+      <div class="field">
+        <label>Username</label>
+        <%= f.text_field :username, autofocus: true, style: "border: 1px solid #bbb;" %>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <%= f.password_field :password, autocomplete: "off", style: "border: 1px solid #bbb;" %>
+      </div>
+    
+      <div class="content" style="border: 0; padding: 0; margin-top: 1em;">
+    
+        <%= f.submit "Log in", class: "ui positive basic button", onclick: "this.form.action='/users/sign_in'" %>
+    
+      <div class="right floated">
+        <%= f.submit "Sign up", class: "ui positive submit button", onclick: "this.form.action='/users'" %>
+        </div>
+      </div>
+    <% end %>
+    
+  </div>
+  
+  <p>&nbsp;</p>
+  
+  <p>&nbsp;</p>
+  
+  <p>&nbsp;</p>
+  
+  <p><% tag_cloud(@tags, %w(css1 css2 css3 css4)) do |tag, css_class| %>
+    <a href="/tags/<%= tag.name %>" class="<%= css_class %>" %><%= tag.name %></a>
+  <% end %></p>
+  
+  
+
+</div>
+
+  <p>&nbsp;</p>
+  
+  <p>© NoteIn&nbsp;<a href="/terms">Terms</a>&nbsp;<a href="/privacy">Privacy</a>&nbsp;<a href="https://github.com/notein/notein">Github</a>

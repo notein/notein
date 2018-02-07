@@ -1,0 +1,53 @@
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="centered-content">
+    
+    <div class="logo">
+      <a href="/" style="text-decoration: none; font-size: 2em;">NoteIn</a>
+    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="ui attached message">
+      <div class="header">
+         Get startet
+      </div>
+    </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "ui form attached fluid segment"}) do |f| %>
+      <div class="field">
+        <label>Username</label>
+        <%= f.text_field :username, autofocus: true %>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+        <% end %>
+        <%= f.password_field :password, autocomplete: "off" %>
+      </div>
+      <%= f.submit "Sign up", class: "ui positive submit button" %><br />
+    <% end %>
+  
+    <% if notice %>
+    <div class="ui negative message notice">
+      <div class="header">
+        Sorry!
+      </div>
+      <p><%= notice %></p>
+      </div>
+      <% end %>
+      
+      <% if alert %>
+      <div class="ui negative message alert">
+        <div class="header">
+          Sorry!
+        </div>
+        <p><%= alert %></p>
+        </div>
+      <% end %>
+      
+      <%= devise_error_messages! %>
+    
+    </div>
+  </div>
+</div>

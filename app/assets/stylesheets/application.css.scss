@@ -1,0 +1,73 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require trix
+ */
+
+$import-google-fonts: false;
+@import "semantic-ui";
+
+a {
+  color: black;
+  text-decoration: underline;
+  cursor: auto; 
+}
+
+a:hover {
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ui.cards > .card > .extra a:not(.ui), .ui.card > .extra a:not(.ui) {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ui.cards > .card > .extra a:not(.ui):hover, .ui.card > .extra a:not(.ui) {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ui.cards > .card > .extra a:not(.ui):hover, .ui.card > .extra a:not(.ui):hover {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ui.basic.buttons .button:hover, .ui.basic.button:hover{
+  background: transparent none !important;
+}
+
+.ui.basic.buttons .button:focus, .ui.basic.button:focus {
+  background: transparent none !important;
+}
+
+.distance {
+  padding-top: 80px;
+}
+
+.ui.rail {
+  font-size: 1.1rem;
+}
+
+.clipboard-button {
+  display: none;
+}
+
+.clipboard--supported .clipboard-button {
+  display: initial;
+}

@@ -1,0 +1,78 @@
+<style>
+
+.ui.form, .ui.modal > .content {
+  font-size: 1.25rem;
+}
+
+.ui.cards > .card {
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+trix-editor {
+  min-height: 1000px;
+  background-color: white;
+  border: 0;
+}
+
+.input-teaser {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  border-top: none;
+  border-bottom: 1px solid #DDD;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.39), 0 -1px 1px #FFF, 0 1px 0 #FFF;
+}
+
+trix-toolbar .trix-button {
+  background-color: white;
+}
+
+.trix-button--icon-increase-nesting-level {
+  display: none;  
+}
+
+.trix-button--icon-decrease-nesting-level {
+  display: none;  
+}
+
+.trix-button-group--block-tools {
+  margin: 0 20px 0 20px;
+}
+
+
+.trix-button--icon-attach-files::before {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA%2FPjxzdmcgaGVpZ2h0PSIxNnB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNCAxNiIgd2lkdGg9IjI0cHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZXNjLz48ZGVmcy8%2BPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSI%2BPGcgZmlsbD0iIzAwMDAwMCIgaWQ9IkNvcmUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMjYuMDAwMDAwLCAtNDYuMDAwMDAwKSI%2BPGcgaWQ9ImJhY2t1cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI2LjAwMDAwMCwgNDYuMDAwMDAwKSI%2BPHBhdGggZD0iTTE5LjQsNiBDMTguNywyLjYgMTUuNywwIDEyLDAgQzkuMSwwIDYuNiwxLjYgNS40LDQgQzIuMyw0LjQgMCw2LjkgMCwxMCBDMCwxMy4zIDIuNywxNiA2LDE2IEwxOSwxNiBDMjEuOCwxNiAyNCwxMy44IDI0LDExIEMyNCw4LjQgMjEuOSw2LjIgMTkuNCw2IEwxOS40LDYgWiBNMTQsOSBMMTQsMTMgTDEwLDEzIEwxMCw5IEw3LDkgTDEyLDQgTDE3LDkgTDE0LDkgTDE0LDkgWiIgaWQ9IlNoYXBlIi8%2BPC9nPjwvZz48L2c%2BPC9zdmc%2B);
+}
+
+</style>
+
+
+
+<div class="main ui container">
+<%= form_for "/#{params[:username]}/#{memo.id}", :html => { :class => "ui form", :id => "my_form" } do |f| %>
+  <% if memo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(memo.errors.count, "error") %> prohibited this memo from being saved:</h2>
+
+      <ul>
+      <% memo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  
+  <div class="field">
+    <input id="my_input" value="<%= @memo.content %>" type="hidden" name="memo[content]">
+    <trix-editor toolbar="my_toolbar" id="my_input" input="my_input" data-mentions-path="/user/mentions?r" autofocus placeholder="Start writing..."></trix-editor>
+    <%#= f.text_area :content %>
+  </div>
+
+  <%= f.hidden_field :public, value: memo.public, name: "memo[public]", id: "note-public" %>
+
+<% end %>
+</div>

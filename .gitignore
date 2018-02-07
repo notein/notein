@@ -1,0 +1,13 @@
+restart.sh
+.bundle
+db/*.sqlite3
+config/config.yml
+config/database.yml
+tmp/
+.sass-cache/
+*.DS_Store
+public/assets/
+public/images/
+*.sql
+*.dump
+*.log

@@ -1,0 +1,32 @@
+<div class="ui borderless main menu fixed" id="text-menu" style="border: 0; background-color: #fafafa; box-shadow: none;">
+  <div class="ui grid" style="width: 100%;">
+    <div class="eleven wide column">
+      <div class="ui two column centered grid">
+        <div class="ui icon input column large" style="width: 50%;">
+          <trix-toolbar id="my_toolbar" style="padding-top: 10px;"></trix-toolbar>
+        </div>
+      </div>
+    </div>
+    <div class="five wide column">
+      <div class="right menu">
+       <div class="header item"> 
+          <% if @memo.new_record? %>                 
+       	    <input type="submit" form="my_form" name="commit" value="Save private" class="ui basic button">
+          <% elsif !@memo.new_record? and @memo.public == 0 %>
+            <input type="submit" form="my_form" name="commit" value="Make public" class="ui basic button">
+          <% end %>
+        </div>
+        <div class="item">
+          <% if @memo.new_record? %>                 
+       	    <input type="submit" form="my_form" name="commit" value="Save public" class="ui positive button">
+          <% else %>
+            <input type="submit" form="my_form" name="commit" value="Save" class="ui positive button">
+          <% end %>
+        </div>
+        <div class="header item">
+         <a href="/<%= current_user.username %>" class="ui transparent basic button" style="font-size: 1.2em; box-shadow: none; padding-left: 0; color:#21BA45;"><i class="remove icon"></i></a>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

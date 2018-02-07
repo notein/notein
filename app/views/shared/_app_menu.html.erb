@@ -1,0 +1,39 @@
+
+      <div class="ui borderless main menu fixed" id="main-menu" style="border: 0; background-color: #fafafa; box-shadow: none;">
+        <div class="ui grid" style="width: 100%">
+			
+			
+          <div class="four wide column">
+            <%= render partial: "shared/menu_logo" %>
+            
+          </div>
+		  
+		  
+		  
+		  
+          <div class="nine wide column">
+            <div class="ui two column centered grid">
+              
+              <% unless current_site?("memos", "show") %>
+			  
+			  	      <%= render partial: "shared/menu_search" %>
+			  
+              <% end %>
+              
+            </div>
+          </div>
+          
+		  
+		  
+		  
+		  
+		  <div class="two wide column">
+        
+          <%= render partial: "shared/menu_dropdown" %>
+            
+      </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>     

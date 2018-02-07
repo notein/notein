@@ -1,0 +1,6 @@
+<div data-controller="search" data-username="<%= params[:username] %>" class="ui icon input column large" style="width:75%;">
+  <div class="ui right action left icon input" style="width:100%; padding-top: 5px;">
+    <i class="search icon"></i>
+    <input data-action="keypress->search#fire" data-target="search.field" placeholder="<%= search_placeholder(params) %>" value="<%= search_text(params) %>" type="text" style="width: 100%; border: 0;" id="search-input" autofocus>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NoteIn</title>
+    <%= csrf_meta_tags %>
+    
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <%= stylesheet_link_tag    'application' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+  <body>
+  
+  <style>
+  
+  a, a:hover {
+      color: black;
+      text-decoration: underline;
+      cursor: pointer;
+  }
+  
+    body {
+      background: #fafafa;
+    }
+
+  .outer-container {
+    display: table;
+    width: 100%;
+    height: 66%;
+  }
+
+  .inner-container {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .centered-content {
+    display: inline-block;
+    padding: 20px;
+    width: 360px;
+  }
+
+  .message, .header, .field, .form {
+    text-align: left;
+  }
+  
+  
+  </style>
+
+  <%= yield %>
+      
+  </body>
+</html>
+

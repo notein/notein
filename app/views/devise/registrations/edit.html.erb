@@ -1,0 +1,104 @@
+<style>
+  
+  .centered-content {
+    width: 720px;
+  }
+  
+  .logo > a {
+    text-decoration: none; font-size: 2em;
+  }
+  
+  .ui.avatar.image {
+    background-color: #<%= current_user.avatar %>;
+    margin: 0 10px 10px 0;
+  }
+  
+</style>
+
+
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="centered-content">
+    
+    <div class="logo">
+      <a href="/">NoteIn</a>
+    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="ui grid">
+      
+      <% if @user && @user.email.blank? %>
+      
+      <div action-controller="clipboard" class="ui message warning" style="width: 100%">
+        <p>If you forgot your password you can recover it using your recovery key:</p>
+        
+        <div class="ui action input" data-controller="clipboard">
+          <input data-target="clipboard.source" type="text" value="<%= @user.authentication_token %>">
+          <button data-action="clipboard#copy" class="ui positive right labeled icon button clipboard-button"><i class="copy icon"></i>Copy</button>
+        </div>
+        
+        <h4>Please store your recovery key somewhere safe!</h4>
+        
+        <p>Alternative: Enter your email to recover your account.</p>
+        
+      <% end %>
+      
+      </div>
+        
+      <div class="ten wide column">
+        
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { :class => "ui form attached fluid segment" }) do |f| %>
+          <div class="field">
+            <div class="ui avatar image"></div>
+            <%= link_to current_user.username, user_path(current_user.username) %>
+          </div>
+          <div class="field">
+            <%= f.label :email %>
+            <%= f.email_field :email %>
+          </div>
+
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+          <% end %>
+
+          <div class="field">
+            <%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
+            <%= f.password_field :password, autocomplete: "off" %>
+            <% if @minimum_password_length %>
+              <br />
+              <em><%= @minimum_password_length %> characters minimum</em>
+            <% end %>
+          </div>
+
+          <div class="field">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation, autocomplete: "off" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
+            <%= f.password_field :current_password, autocomplete: "off" %>
+          </div>
+
+          <div class="actions">
+            <%= f.submit "Save", class: "ui positive submit button" %>&nbsp;&nbsp;&nbsp;<%= link_to "Cancel", user_path(current_user.username) %>
+          </div>
+        <% end %>
+        
+        <%= devise_error_messages! %>
+        
+      </div>
+        
+      <div class="six wide column">
+        
+        <h3>Unhappy?</h3>
+
+        <p><%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "ui negative basic button" %></p>
+        
+      </div>
+    
+    
+    </div>
+  </div>
+</div>

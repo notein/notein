@@ -1,0 +1,166 @@
+<style>
+
+.ui.form, .ui.modal > .content {
+  font-size: 1.25rem;
+}
+
+# .ui.cards > .card {
+#   cursor: pointer;
+# }
+
+h1 {
+  font-size: 1.5rem;
+}
+
+trix-editor {
+  min-height: 40px;
+  background-color: white;
+  border: 0;
+}
+
+trix-toolbar {
+  border-bottom: 1px dotted #bbb;
+}
+
+.input-teaser {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  border-top: none;
+  border-bottom: 1px solid #DDD;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.39), 0 -1px 1px #FFF, 0 1px 0 #FFF;
+}
+
+</style>
+
+<div class="ui text container">
+  
+
+<% unless @related_tags.blank? %>
+
+<div class="ui segment" style="padding:0; margin:0; border:0;">
+  <div class="right ui rail">
+    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:15px;">
+      <h3 class="ui header">Related tags</h3>
+      <% for tag in @related_tags %>
+      <p style="line-height: 1em;">
+      <% unless params[:controller] == "search" %>
+        <%= link_to content_tag(:i, nil, class: "add circle icon", style: "text-decoration:none;"), build_add_tag_url(params, tag.name) %>&nbsp;
+      <% end %>
+        <a href="<%= build_tag_url(params, tag.name) %>"><%= tag.name %></a>
+      </p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% end %>
+
+<% unless @tags.blank? %>
+
+<div class="ui segment" style="padding:0; margin:0; border:0;">
+  <div class="right ui rail">
+    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:15px;">
+      <h3 class="ui header">Popular tags</h3>
+      <% for tag in @tags %>
+      <p style="line-height: 1em;">
+        <a href="<%= build_tag_url(params, tag.name, current_user) %>"><%= tag.name %></a>
+      </p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% end %>
+
+
+  <div id="my_memos" class="ui cards">  
+    
+        <% if current_user && current_user.email.blank? and current_user.recover_message == 1 %>
+        
+        <div class="ui message warning" style="width: 100%">
+          <p>If you forgot your password you can recover it using your recovery key:</p>
+          
+          <div class="ui action input" data-controller="clipboard">
+            <input data-target="clipboard.source" type="text" value="<%= current_user.authentication_token %>">
+            <button data-action="clipboard#copy" class="ui positive right labeled icon button clipboard-button"><i class="copy icon"></i>Copy</button>
+          </div>
+          
+          <h4>Please store your recovery key somewhere safe!</h4>
+          
+          <p><a href="/users/edit">Alternative: Enter your email to recover your account.</a></p>
+          
+          <%= form_for "", url: "/users/recover_message", html: { method: :post } do |f| %>
+            
+            <div class="actions">
+              <%= f.submit "Ok, got it", class: "ui button", data: { confirm: 'I stored my recover key somewhere safe...' } %>
+            </div>
+          <% end %>
+          
+        </div>
+        
+        <% end %>
+    
+    <% for memo in @memos %>
+    
+    <div id="card_<%= memo.id.to_s %>" class="ui card" style="width: 100%">
+    
+      <% if memo.public == 0 %>
+        <a class="ui right corner label">
+            <i class="lock icon"></i>
+          </a><% end %>
+      <div class="content">
+      
+      <div class="right floated meta" style="padding-right: 15px;"><%= time_ago_in_words(memo.updated_at) %> ago</div>
+                
+        <div class="description">
+          <div class="trix-content"><%= emojify sanitize memo.content.truncate(1500) %></div>
+        </div>
+          
+      </div>
+      
+      <div class="extra content">
+       
+       <%= link_to("Read more...", "/#{memo.user.username}/#{memo.url_id}", class: "item", style: "color: #21BA45;") %>
+       
+      <div data-controller="dropdown" class="right floated author">
+      
+      <% if current_user && current_user.username == params[:username] %>
+      
+        <%= link_to("Edit", "/#{memo.user.username}/#{memo.url_id}/edit", class: "ui positive basic button tiny") if current_user and memo.user == current_user %>
+      
+      
+        <div data-action="mouseover->dropdown#open" class="ui right aligned dropdown item" tabindex="0" style="z-index: 100;">
+      
+          <% if current_user and memo.user == current_user %>
+      
+
+          <i class="angle down icon"></i>
+          <div data-action="mouseleave->dropdown#close" data-target="dropdown.menu" class="menu transition hidden" tabindex="-1">
+            <%= link_to("Share note", "/#{memo.user.username}/#{memo.url_id}/edit", class: "item") %>
+            <%= link_to "Delete note" , "/#{memo.user.username}/#{memo.url_id}", method: :delete, data: { confirm: 'Are you sure?' }, class: "item" %>
+          </div>
+      
+          <% end %>
+      
+        </div>
+        
+        <% else %>
+      
+      <a href="/<%= memo.user.username %>" style="color: rgba(0, 0, 0, 0.4);"><div class="ui avatar image" style="background-color: #<%= memo.user.avatar %>"></div><%= memo.user.username %></a>
+      
+      <% end %>      
+           
+        
+      </div>
+      
+       </div>
+      
+    </div>
+    
+    <% end %>
+    
+  </div>
+
+</div>
+    
+

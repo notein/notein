@@ -1,0 +1,29 @@
+defaults: &defaults
+  address:
+  port:
+  domain:
+  user_name:
+  password:
+  authentication: 'plain'
+  enable_starttls_auto: false
+  openssl_verify_mode: 'none'
+  sender:
+  service_name: 'NoteIn'
+  owner: 'NoteIn'
+  owner_email: 'info@notein.com'
+
+development:
+  app_token:
+  devise_token:
+  host: 'http://localhost:3000'
+  stripe_api_key:
+  stripe_public_key:
+  <<: *defaults
+
+production:
+  app_token:
+  devise_token: 
+  host:
+  stripe_api_key:
+  stripe_public_key:
+  <<: *defaults

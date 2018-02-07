@@ -1,0 +1,31 @@
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="centered-content">
+    
+    <div class="logo">
+      <a href="/" style="text-decoration: none; font-size: 2em;">NoteIn</a>
+    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="ui attached message">
+      <div class="header">
+         Forgot your password?
+      </div>
+    </div>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "ui form attached fluid segment" }) do |f| %>
+      
+      <div class="field">
+        <%= f.label :username %>
+        <%= f.text_field :username, autofocus: true %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Reset my password", class: "ui positive submit button" %>
+      </div>
+    <% end %>
+        
+    <%= devise_error_messages! %>
+    </div>
+  </div>
+</div>
