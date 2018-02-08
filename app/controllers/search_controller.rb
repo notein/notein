@@ -13,9 +13,9 @@ class SearchController < ApplicationController
       end
     elsif @user.nil? and params[:term]
       if !current_user.nil? and (current_user == @user)
-        @memos = Memo.where("content like ? and public is [0,1]", "%#{params[:term]}%").joins(:user).order(updated_at: :desc)
+        @memos = Memo.where("content like ? and public in (0,1)", "%#{params[:term]}%").joins(:user).order(updated_at: :desc)
       else
-        @memos = Memo.where("content like ? and public is 1", "%#{params[:term]}%").joins(:user).order(updated_at: :desc)
+        @memos = Memo.where("content like ? and public = 1", "%#{params[:term]}%").joins(:user).order(updated_at: :desc)
       end
     end
     all_related_tags = @memos.collect{|memo|memo.tags}.flatten.uniq    

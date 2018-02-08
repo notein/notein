@@ -20,7 +20,7 @@ class UsersController < ApplicationController
         @memos = @user.memos.order(updated_at: :desc)
         @tags = @memos.tag_counts_on(:tags)
       elsif @user
-        @memos = @user.memos.where("public is ?", 1).order(updated_at: :desc)
+        @memos = @user.memos.where("public = ?", 1).order(updated_at: :desc)
         @tags = @memos.tag_counts_on(:tags)
       else
         respond_to do |format|
