@@ -88,10 +88,11 @@ class MemosController < ApplicationController
  
     def update_tags_mentions(memo, user)
       tags = memo.content.scan(/#([A-Za-z0-9]+)/).flatten
+      downcased_tags = tags.map{|x|x.downcase}
       memo.tags.delete_all
-      user.tag(memo, with: tags, on: :tags)
+      user.tag(memo, with: downcased_tags, on: :tags)
       tags.each do |tag|
-        memo.content.gsub!("#" + tag, "<a href='/tags/" + tag + "'>#" + tag + "</a>")
+        memo.content.gsub!("#" + tag, "<a href='/tags/" + tag.downcase + "'>#" + tag + "</a>")
       end 
 
       mentions = memo.content.scan(/\s@([A-Za-z0-9]+)/).flatten
