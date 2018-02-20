@@ -71,3 +71,11 @@ a:hover {
 .clipboard--supported .clipboard-button {
   display: initial;
 }
+
+.hidden {
+  display: none;
+}
+
+.selected {
+  background: rgba(0, 0, 0, 0.05);
+}

@@ -1,22 +1,22 @@
-          	<div data-controller="dropdown" class="right menu">
-              <div class="item">
-                <%= link_to("Get startet", "/", class: "ui positive basic button") unless current_user %>
-              </div>
-              <% if current_user %>
-                <% if current_site?("memos", "show") and current_user.username == params[:username] %>
-                  <div class="item">
-                    <%= link_to "Edit", "/#{current_user.username}/#{@memo.url_id}/edit", class: "ui positive button" %>
-                  </div>
-                <% else %>
-                  <div class="item right aligned">
-                    <a href="/<%= current_user.username %>/new" class="ui positive button">New</a>
-                  </div>
-                <% end %>
-              <div data-action="mouseover->dropdown#open" id="header-menu" class="ui right aligned dropdown item" tabindex="0">
-                <i class="angle down icon"></i>
-                <div data-action="mouseleave->dropdown#close" data-target="dropdown.menu" class="menu transition hidden" tabindex="-1" id="menu-dropdown">
-                  <%= link_to("Settings", "/users/edit", class: "item") if current_user %>
-                  <%= link_to("Logout", "/users/sign_out", method: :delete, class: "item") %>  
-                </div>
-              <% end %>
-              </div>
+<div data-controller="dropdown" class="right menu">
+<div class="item">
+  <%= link_to("Get startet", "/", class: "ui positive basic button") unless current_user %>
+</div>
+<% if current_user %>
+  <% if current_site?("memos", "show") and current_user.username == params[:username] %>
+    <div class="item">
+      <%= link_to "Edit", "/#{current_user.username}/#{@memo.url_id}/edit", class: "ui positive button" %>
+    </div>
+  <% else %>
+    <div class="item right aligned">
+      <a href="/<%= current_user.username %>/new" class="ui positive button">New</a>
+    </div>
+  <% end %>
+<div data-action="mouseover->dropdown#open" id="header-menu" class="ui right aligned dropdown item" tabindex="0">
+  <i class="angle down icon"></i>
+  <div data-action="mouseleave->dropdown#close" data-target="dropdown.menu" class="menu transition hidden" tabindex="-1" id="menu-dropdown">
+    <%= link_to("Settings", "/users/edit", class: "item") if current_user %>
+    <%= link_to("Logout", "/users/sign_out", method: :delete, class: "item") %>  
+  </div>
+<% end %>
+</div>

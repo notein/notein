@@ -49,8 +49,6 @@ trix-toolbar .trix-button {
 
 </style>
 
-
-
 <div class="main ui container">
 <%= form_for "/#{params[:username]}/#{memo.id}", :html => { :class => "ui form", :id => "my_form" } do |f| %>
   <% if memo.errors.any? %>
@@ -67,7 +65,7 @@ trix-toolbar .trix-button {
   
   
   <div class="field">
-    <input id="my_input" value="<%= @memo.content %>" type="hidden" name="memo[content]">
+    <input id="my_input" list="browsers" value="<%= @memo.content %>" type="hidden" name="memo[content]">
     <trix-editor toolbar="my_toolbar" id="my_input" input="my_input" data-mentions-path="/user/mentions?r" autofocus placeholder="Start writing..."></trix-editor>
     <%#= f.text_area :content %>
   </div>
@@ -75,4 +73,11 @@ trix-toolbar .trix-button {
   <%= f.hidden_field :public, value: memo.public, name: "memo[public]", id: "note-public" %>
 
 <% end %>
+</div>
+
+<div class="hidden" id="user_tags"><%= @tag_list %></div>
+
+<div class="ui right aligned dropdown item" tabindex="0" id="tags_dropdown">
+  <div data-controller="autocomplete" class="menu transition hidden" tabindex="-1" id="dropdown_list">
+  </div>
 </div>
