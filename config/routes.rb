@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   # search
   get '/search/:term', to: 'search#show'
   get ':username/search/:term', to: 'search#show'
+  post '/search/tags', to: 'search#tags'
+  post '/search/users', to: 'search#users'
+  post '/search/emoji', to: 'search#emoji'
   
   match 'sorry', to: 'home#sorry', via: :get
   

@@ -21,5 +21,30 @@ class SearchController < ApplicationController
     all_related_tags = @memos.collect{|memo|memo.tags}.flatten.uniq    
     @related_tags = all_related_tags.select{|tag|tag unless build_tag_list(params[:term], nil).include?(tag.name)}    
   end
+  
+  def tags
+    @tag_list = Tag.where("name like ?", "#{params[:query]}%").order(taggings_count: :desc).collect{|t|t.name}
+    respond_to do |format|
+      format.json { render json: @tag_list }
+    end
+  end
+  
+  def users
+    @user_list = User.all.collect{|u|u.username}
+    respond_to do |format|
+      format.json { render json: @user_list }
+    end
+  end
+  
+  def emoji
+    e = "smile"
+    if emoji = Emoji.find_by_alias(e)
+      @emoji_list = []
+      @emoji_list << emoji.image_filename
+    end
+    respond_to do |format|
+      format.json { render json: @emoji_list }
+    end
+  end  
 
 end

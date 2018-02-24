@@ -30,7 +30,6 @@ class TagsController < ApplicationController
     else 
       return 1      
     end
-    
   end
-
+  
 end

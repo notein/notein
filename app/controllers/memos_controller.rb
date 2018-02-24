@@ -18,13 +18,11 @@ class MemosController < ApplicationController
   # GET /memos/new
   def new
     @memo = Memo.new
-    @tag_list = current_user.memos.tag_counts_on(:tags).collect{|x|x.name}.join(",")
   end
 
   # GET /memos/1/edit
   def edit
     @user = User.find_by(username: params[:username])
-    @tag_list = current_user.memos.tag_counts_on(:tags).collect{|x|x.name}.join(",")
   end
 
   # POST /memos
@@ -106,9 +104,4 @@ class MemosController < ApplicationController
       end
       memo.save 
     end
-    
-    def add_links(memo)
-      require 'uri'
-      links = memo.content.scan(URI.regexp)
-    end
-end
+  end
