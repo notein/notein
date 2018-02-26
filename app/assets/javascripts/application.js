@@ -44,7 +44,7 @@
   
   application.register("autocomplete", class extends Stimulus.Controller {
     enter(event) {
-      insertText(event.srcElement.innerHTML);
+      insertText(event.srcElement.getAttribute('data-value'), event.srcElement.getAttribute('data-type'));
     }    
   })
   
@@ -101,9 +101,10 @@ document.onkeydown = function(e) {
         break;
       case 13: // enter
         var d = document.getElementById('dropdown_list');
-        var tag = d.getElementsByClassName("item selected")[0].innerHTML;
+        var value = d.getElementsByClassName("item selected")[0].getAttribute('data-value');
+        var type = d.getElementsByClassName("item selected")[0].getAttribute('data-type');
         event.preventDefault();
-        insertText(tag);
+        insertText(value, type);
         break;
       case 27: // esc
         hideDropdown();
@@ -161,10 +162,14 @@ function hideDropdown() {
   }
 }
 
-function insertText(str) {
+function insertText(str, type) {
   var editor = document.querySelector("trix-editor").editor;
   var current = editor.getSelectedRange();
-  editor.setSelectedRange([current[0]-1,current[1]])
+  if (type.indexOf("emoji") != -1) {
+    editor.setSelectedRange([current[0]-2,current[1]])
+  } else {
+    editor.setSelectedRange([current[0]-1,current[1]])
+  }  
   editor.deleteInDirection("forward")
   editor.insertString(str);
 }
@@ -179,14 +184,24 @@ function buildDropdown(char, url) {
       var tags = data;
       var first = false;
       for(var i = 0; i < tags.length; i++){
-        var tag = tags[i];
+        if (url.indexOf("emoji") != -1) {
+          var tag = tags[i][0];
+          var image = tags[i][1];
+        } else {
+          var tag = tags[i];
+        }      
         if (tag.charAt(0) == char) {
           var link = "<a class='item";
           if (!first) {
             link += " selected";
             first = true;
           } 
-          link += "' style='text-decoration:none;' data-action='autocomplete#enter' data-target='autocomplete.source'>"+ tag + "</a>";
+          if (image) {
+            link += "' style='text-decoration:none;' data-type='emoji' data-value='" + image + "' data-action='autocomplete#enter' data-target='autocomplete.source'>" +  image + " ";
+          } else {
+            link += "' style='text-decoration:none;' data-type='text' data-value='" + tag + "' data-action='autocomplete#enter' data-target='autocomplete.source'>";
+          }      
+          link += tag + "</a>";
           document.getElementById('tags_dropdown').children[0].innerHTML += link;
         }
       }

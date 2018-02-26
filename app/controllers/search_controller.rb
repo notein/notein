@@ -30,18 +30,20 @@ class SearchController < ApplicationController
   end
   
   def users
-    @user_list = User.all.collect{|u|u.username}
+    @user_list = User.where("username like ?", "#{params[:query]}%").collect{|u|u.username}
     respond_to do |format|
       format.json { render json: @user_list }
     end
   end
   
   def emoji
-    e = "smile"
-    if emoji = Emoji.find_by_alias(e)
-      @emoji_list = []
-      @emoji_list << emoji.image_filename
-    end
+    #if emoji = Emoji.find_by_alias(e)
+    #  @emoji_list = []
+    #  @emoji_list << emoji.image_filename
+    #end
+    @emoji_list = Emoji.all.map(&:aliases).flatten.select{|e|e if e[0] == params[:query]}.first(10)
+    @emoji_list.map! {|e| [e, Emoji.find_by_alias(e).raw]}
+    
     respond_to do |format|
       format.json { render json: @emoji_list }
     end
