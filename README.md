@@ -6,11 +6,16 @@ Alpha version, still WIP!
 
 $ bundle install
 
+$ cd config
+
 $ cp config.yml.example config.yml
 
 $ cp secrets.yml.example secrets.yml
 
+$ cp database.yml.example database.yml
+
+$ cd ..
+
 $ rake db:migrate
 
 $ rails s
-
