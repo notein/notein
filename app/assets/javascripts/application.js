@@ -180,7 +180,6 @@ function buildDropdown(char, url) {
     type: "POST",
     data: "query=" + char,
     success: function(data) {
-      console.log(data);
       var tags = data;
       var first = false;
       for(var i = 0; i < tags.length; i++){
