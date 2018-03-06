@@ -77,7 +77,7 @@ class MemosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_memo
-      redirect_to "/" if current_user.username != params[:username]
+      redirect_to "/" if !current_user.nil? && current_user.username != params[:username]
       @memo = Memo.find_by(url_id: params[:id], user_id: current_user.id) if current_user
     end
 

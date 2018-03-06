@@ -37,7 +37,8 @@ class SearchController < ApplicationController
   end
   
   def emoji
-    @emoji_list = Emoji.all.map(&:aliases).flatten.select{|e|e if e[0] == params[:query]}.first(10)
+    q = params[:query]
+    @emoji_list = Emoji.all.map(&:aliases).flatten.select{|e|e if e[0, q.size] == params[:query]}.first(10)
     @emoji_list.map! {|e| [e, Emoji.find_by_alias(e).raw]}
     
     respond_to do |format|

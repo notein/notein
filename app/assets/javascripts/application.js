@@ -44,7 +44,8 @@
   
   application.register("autocomplete", class extends Stimulus.Controller {
     enter(event) {
-      insertText(event.srcElement.getAttribute('data-value'), event.srcElement.getAttribute('data-type'));
+      var char = document.getElementById('dropdown_list').getElementsByClassName("item selected")[0].getAttribute('data-char');
+      insertText(event.srcElement.getAttribute('data-value'), event.srcElement.getAttribute('data-type'), char);
     }    
   })
   
@@ -76,62 +77,74 @@ addEventListener("trix-attachment-add", function(event) {
   }
 })
 
-document.onkeydown = function(e) {
+addEventListener("trix-change", function(event) {
+    trix = event.target;
+    var doc = trix.editor.getDocument().toString();
+    var pos = trix.editor.getSelectedRange();
+    var d = document.getElementById('dropdown_list').getElementsByClassName("item selected")[0];
+    if (dropdownActive()) {
+      var trigger = d.getAttribute('data-trigger');
+      i = 1;
+      var pos_check = doc.charAt(pos[1] - i);
+      var collect_char = []
+      while (trigger != pos_check) {
+        pos_check = doc.charAt(pos[1] - i);
+        collect_char.push(pos_check);
+        i++;
+      }
+      var char = collect_char.reverse().slice(1).join("");
+    } else {
+      var trigger = doc.charAt(pos[1] - 2);
+      var char = doc.charAt(pos[1] - 1);
+    }
+    var d = document.getElementById('tags_dropdown');
+    hideDropdown();
+    if (char.length > 0) {
+      if (trigger == "#") {
+        buildDropdown(char, "/search/tags", trigger);
+      } else if (trigger == ":") {
+        buildDropdown(char, "/search/emoji", trigger)
+      } else if (trigger == "@") {
+        buildDropdown(char, "/search/users", trigger);
+      }
+    }
+})
+
+addEventListener('keydown', function(e) {
   if (dropdownActive()) {
+    var d = document.getElementById('dropdown_list');
+    var selected = d.getElementsByClassName("item selected")[0];
     switch (e.keyCode) {
     case 38: // up
-        var d = document.getElementById('dropdown_list');
-        var selected = d.getElementsByClassName("item selected")[0];
         var prev = selected.previousElementSibling;
         if (prev != null) {
           selected.classList.remove("selected");
           prev.classList.add("selected");
         }
-        event.preventDefault();
+        e.preventDefault();
         break;
       case 40: // down
-        var d = document.getElementById('dropdown_list');
-        var selected = d.getElementsByClassName("item selected")[0];
         var next = selected.nextElementSibling;
         if (next != null) {
           selected.classList.remove("selected");
           next.classList.add("selected");
         }
-        event.preventDefault();
+        e.preventDefault();
         break;
       case 13: // enter
-        var d = document.getElementById('dropdown_list');
-        var value = d.getElementsByClassName("item selected")[0].getAttribute('data-value');
-        var type = d.getElementsByClassName("item selected")[0].getAttribute('data-type');
-        event.preventDefault();
-        insertText(value, type);
+        e.preventDefault();
+        e.stopPropagation();
+        var value = selected.getAttribute('data-value');
+        var type = selected.getAttribute('data-type');
+        var char = selected.getAttribute('data-char');
+        insertText(value, type, char);
         break;
       case 27: // esc
         hideDropdown();
-        event.preventDefault();
+        e.preventDefault();
         break;
       } 
   }
-};
-
-addEventListener("trix-change", function(event) {
-    trix = event.target;
-    var doc = trix.editor.getDocument().toString();
-    var pos = trix.editor.getSelectedRange();
-    var trigger = doc.charAt(pos[1] - 2);
-    var char = doc.charAt(pos[1] - 1);
-    var d = document.getElementById('tags_dropdown');
-    hideDropdown();
-    if (trigger == "#") {
-      buildDropdown(char, "/search/tags");
-      showDropdown(d, trix);
-    } else if (trigger == ":") {
-      buildDropdown(char, "/search/emoji");
-      showDropdown(d, trix);
-    } else if (trigger == "@") {
-      buildDropdown(char, "/search/users");
-      showDropdown(d, trix);
-    }
 })
 
 function showDropdown(d, trix) {
@@ -162,19 +175,21 @@ function hideDropdown() {
   }
 }
 
-function insertText(str, type) {
+function insertText(str, type, char) {
   var editor = document.querySelector("trix-editor").editor;
   var current = editor.getSelectedRange();
   if (type.indexOf("emoji") != -1) {
-    editor.setSelectedRange([current[0]-2,current[1]])
+    editor.setSelectedRange([current[0]-char.length,current[0]]);
+    editor.deleteInDirection("backward");
   } else {
-    editor.setSelectedRange([current[0]-1,current[1]])
-  }  
-  editor.deleteInDirection("forward")
+    editor.setSelectedRange([current[0]-char.length,current[0]]);
+  }
+  editor.deleteInDirection("backward");
   editor.insertString(str);
+  hideDropdown();
 }
 
-function buildDropdown(char, url) {
+function buildDropdown(char, url, trigger) {
   Rails.ajax({
     url: url,
     type: "POST",
@@ -188,20 +203,21 @@ function buildDropdown(char, url) {
           var image = tags[i][1];
         } else {
           var tag = tags[i];
-        }      
-        if (tag.charAt(0) == char) {
+        } 
+        if (tag.substring(0, char.length) == char) {
           var link = "<a class='item";
           if (!first) {
             link += " selected";
             first = true;
           } 
           if (image) {
-            link += "' style='text-decoration:none;' data-type='emoji' data-value='" + image + "' data-action='autocomplete#enter' data-target='autocomplete.source'>" +  image + " ";
+            link += "' style='text-decoration:none;' data-char='" + char + "' data-trigger='" + trigger + "' data-type='emoji' data-value='" + image + "' data-action='autocomplete#enter' data-target='autocomplete.source'>" +  image + " ";
           } else {
-            link += "' style='text-decoration:none;' data-type='text' data-value='" + tag + "' data-action='autocomplete#enter' data-target='autocomplete.source'>";
+            link += "' style='text-decoration:none;' data-char='" + char + "' data-trigger='" + trigger + "' data-type='text' data-value='" + tag + "' data-action='autocomplete#enter' data-target='autocomplete.source'>";
           }      
           link += tag + "</a>";
           document.getElementById('tags_dropdown').children[0].innerHTML += link;
+          showDropdown(document.getElementById('tags_dropdown'), document.querySelector("trix-editor"));
         }
       }
     }
