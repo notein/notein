@@ -132,8 +132,6 @@ addEventListener('keydown', function(e) {
         e.preventDefault();
         break;
       case 13: // enter
-        e.preventDefault();
-        e.stopPropagation();
         var value = selected.getAttribute('data-value');
         var type = selected.getAttribute('data-type');
         var char = selected.getAttribute('data-char');
@@ -186,6 +184,7 @@ function insertText(str, type, char) {
   }
   editor.deleteInDirection("backward");
   editor.insertString(str);
+  editor.deleteInDirection("forward");
   hideDropdown();
 }
 
