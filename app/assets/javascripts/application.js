@@ -101,11 +101,11 @@ addEventListener("trix-change", function(event) {
     hideDropdown();
     if (char.length > 0) {
       if (trigger == "#") {
-        buildDropdown(char, "/search/tags", trigger);
+        buildDropdown(char, "tags", trigger);
       } else if (trigger == ":") {
-        buildDropdown(char, "/search/emoji", trigger)
+        buildDropdown(char, "emoji", trigger)
       } else if (trigger == "@") {
-        buildDropdown(char, "/search/users", trigger);
+        buildDropdown(char, "users", trigger);
       }
     }
 })
@@ -176,21 +176,27 @@ function hideDropdown() {
 function insertText(str, type, char) {
   var editor = document.querySelector("trix-editor").editor;
   var current = editor.getSelectedRange();
+  editor.setSelectedRange([current[0]-char.length,current[0]]);
   if (type.indexOf("emoji") != -1) {
-    editor.setSelectedRange([current[0]-char.length,current[0]]);
-    editor.deleteInDirection("backward");
-  } else {
-    editor.setSelectedRange([current[0]-char.length,current[0]]);
+    editor.deleteInDirection("backward"); // remove trigger
+    editor.deleteInDirection("backward"); // remove text
+    editor.insertString(str);
+  } else if (type.indexOf("tags") != -1) {
+    editor.deleteInDirection("backward"); // remove text
+    link = '<a href="/tags/' + str + '">' + str + '</a>'
+    editor.insertHTML(link);
+  } else if (type.indexOf("users") != -1) {
+    editor.deleteInDirection("backward"); // remove text
+    link = '<a href="/' + str + '">' + str + '</a>'
+    editor.insertHTML(link);
   }
-  editor.deleteInDirection("backward");
-  editor.insertString(str);
-  editor.deleteInDirection("forward");
+  editor.deleteInDirection("forward"); // remove newline
   hideDropdown();
 }
 
 function buildDropdown(char, url, trigger) {
   Rails.ajax({
-    url: url,
+    url: "/search/" + url,
     type: "POST",
     data: "query=" + char,
     success: function(data) {
@@ -208,12 +214,17 @@ function buildDropdown(char, url, trigger) {
           if (!first) {
             link += " selected";
             first = true;
-          } 
+          }
+          link += "' style='text-decoration:none;' data-char='" + char + "' data-trigger='" + trigger + "' data-type='" + url + "' data-value='"; 
           if (image) {
-            link += "' style='text-decoration:none;' data-char='" + char + "' data-trigger='" + trigger + "' data-type='emoji' data-value='" + image + "' data-action='autocomplete#enter' data-target='autocomplete.source'>" +  image + " ";
+            link += image;
           } else {
-            link += "' style='text-decoration:none;' data-char='" + char + "' data-trigger='" + trigger + "' data-type='text' data-value='" + tag + "' data-action='autocomplete#enter' data-target='autocomplete.source'>";
-          }      
+            link += tag;
+          }
+          link += "' data-action='autocomplete#enter' data-target='autocomplete.source'>";
+          if (image) {
+            link += image + " ";
+          }
           link += tag + "</a>";
           document.getElementById('tags_dropdown').children[0].innerHTML += link;
           showDropdown(document.getElementById('tags_dropdown'), document.querySelector("trix-editor"));

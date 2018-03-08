@@ -35,7 +35,6 @@ class MemosController < ApplicationController
       @memo.user = author
       respond_to do |format|
         if @memo.save
-          update_tags_mentions(@memo, current_user)
           format.html { redirect_to "/#{current_user.username}" }
           format.json { render :show, status: :created, location: @memo }
         else
@@ -54,7 +53,6 @@ class MemosController < ApplicationController
     params[:memo][:public] = "1" if params[:commit] == "Make public"
     respond_to do |format|
       if @memo.update(memo_params)
-        update_tags_mentions(@memo, current_user)
         format.html { redirect_to "/#{current_user.username}" }
         format.json { render :show, status: :ok, location: @memo }
       else
@@ -85,23 +83,5 @@ class MemosController < ApplicationController
     def memo_params
       params.require(:memo).permit(:title, :content, :user_id, :name, :tag_list, :public)
     end
- 
-    def update_tags_mentions(memo, user)
-      tags = memo.content.scan(/#([A-Za-z0-9]+)/).flatten
-      downcased_tags = tags.map{|x|x.downcase}
-      memo.tags.delete_all
-      user.tag(memo, with: downcased_tags, on: :tags)
-      tags.each do |tag|
-        memo.content.gsub!("#" + tag, "<a href='/tags/" + tag.downcase + "'>#" + tag + "</a>")
-      end 
 
-      mentions = memo.content.scan(/\s@([A-Za-z0-9]+)/).flatten
-      mentions.each do |mention|
-        user = User.find_by_username(mention)
-        if user
-          memo.content.gsub!("@" + mention, "<a href='/" + mention + "'>@" + mention + "</a>")
-        end
-      end
-      memo.save 
-    end
   end
