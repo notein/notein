@@ -177,17 +177,15 @@ function insertText(str, type, char) {
   var editor = document.querySelector("trix-editor").editor;
   var current = editor.getSelectedRange();
   editor.setSelectedRange([current[0]-char.length,current[0]]);
+  editor.deleteInDirection("backward"); // remove trigger
+  editor.deleteInDirection("backward"); // remove text
   if (type.indexOf("emoji") != -1) {
-    editor.deleteInDirection("backward"); // remove trigger
-    editor.deleteInDirection("backward"); // remove text
     editor.insertString(str);
   } else if (type.indexOf("tags") != -1) {
-    editor.deleteInDirection("backward"); // remove text
-    link = '<a href="/tags/' + str + '">' + str + '</a>'
+    link = '<a href="/tags/' + str + '">#' + str + '</a>'
     editor.insertHTML(link);
   } else if (type.indexOf("users") != -1) {
-    editor.deleteInDirection("backward"); // remove text
-    link = '<a href="/' + str + '">' + str + '</a>'
+    link = '<a href="/' + str + '">@' + str + '</a>'
     editor.insertHTML(link);
   }
   editor.deleteInDirection("forward"); // remove newline
