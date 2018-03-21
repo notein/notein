@@ -113,7 +113,7 @@ trix-toolbar {
       <div class="right floated meta" style="padding-right: 15px;"><%= time_ago_in_words(memo.updated_at) %> ago</div>
                 
         <div class="description">
-          <div class="trix-content"><%= emojify sanitize memo.content.truncate(1500) %></div>
+          <div class="trix-content"><%= sanitize memo.content.truncate(1500) %></div>
         </div>
           
       </div>

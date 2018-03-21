@@ -1,4 +1,6 @@
 class MemosController < ApplicationController
+  require 'rinku'
+    
   before_action :set_memo, only: [:edit, :update, :destroy]
   
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
@@ -93,7 +95,9 @@ class MemosController < ApplicationController
       user.tag(memo, with: downcased_tags, on: :tags)
       tags.each do |tag|
         memo.content.gsub!("#" + tag, "<a href='/tags/" + tag.downcase + "'>#" + tag + "</a>")
-      end 
+      end
+      # auto linking
+      memo.content = Rinku.auto_link(memo.content, :all)
       memo.save 
     end
 end

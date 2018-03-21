@@ -77,6 +77,15 @@ addEventListener("trix-attachment-add", function(event) {
   }
 })
 
+// open all external links in a new window
+addEventListener("click", function(event) {
+  var el = event.target
+  console.log(el.tagName)
+  if (el.tagName === "A" && !el.isContentEditable && el.host !== window.location.host) {
+    el.setAttribute("target", "_blank")
+  }
+}, true)
+
 addEventListener("trix-change", function(event) {
     trix = event.target;
     var doc = trix.editor.getDocument().toString();
