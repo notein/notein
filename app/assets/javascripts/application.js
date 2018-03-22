@@ -144,8 +144,8 @@ addEventListener('keydown', function(e) {
 function showDropdown(d, trix) {
   rect = trix.editor.getClientRectAtPosition(trix.editor.getPosition());
   d.style.position = "absolute";
-  d.style.left = rect.x +'px';
-  d.style.top = (rect.y + 20) +'px';
+  d.style.left = (rect.x - 98) + 'px';
+  d.style.top = (rect.y - 59) + 'px';
   d.children[0].classList.remove("hidden");
   d.children[0].classList.add("visible");
 }
