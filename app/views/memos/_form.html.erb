@@ -65,9 +65,10 @@ trix-toolbar .trix-button {
   
   
   <div class="field">
+    <div class="trix-content">
     <input id="my_input" list="browsers" value="<%= @memo.content %>" type="hidden" name="memo[content]">
     <trix-editor toolbar="my_toolbar" id="my_input" input="my_input" data-mentions-path="/user/mentions?r" autofocus placeholder="Start writing..."></trix-editor>
-    <%#= f.text_area :content %>
+    <div>
   </div>
 
   <%= f.hidden_field :public, value: memo.public, name: "memo[public]", id: "note-public" %>
