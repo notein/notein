@@ -94,7 +94,7 @@ class MemosController < ApplicationController
       memo.tags.delete_all
       user.tag(memo, with: downcased_tags, on: :tags)
       tags.each do |tag|
-        memo.content.gsub!("#" + tag, "<a href='/tags/" + tag.downcase + "'>#" + tag + "</a>")
+        memo.content.gsub!(" #" + tag, " <a href='/tags/" + tag.downcase + "'>#" + tag + "</a>")
       end
       # auto linking
       memo.content = Rinku.auto_link(memo.content, :all)
