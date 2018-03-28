@@ -18,7 +18,7 @@ class User < ApplicationRecord
   
   before_create :set_avatar_color
 
-  has_many :memos
+  has_many :memos, dependent: :destroy
   
   acts_as_tagger
   acts_as_follower
