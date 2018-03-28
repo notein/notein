@@ -33,13 +33,35 @@ trix-toolbar {
 </style>
 
 <div class="ui text container">
-  
+
+<% unless @user.blank? %>
+
+<div class="ui segment" style="padding:0; margin:0; border:0;">
+  <div class="right ui rail">
+    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:15px;">
+      <h2 class="ui header"><%= @user.username %></h2>
+      <p><%= "#{@user.memos.size} notes" if @user.memos.size > 1 %></p>
+    </div>
+  </div>
+</div>
+
+<% else %>
+
+<div class="ui segment" style="padding:0; margin:0; border:0;">
+  <div class="right ui rail">
+    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:15px;">
+      <h2 class="ui header">Recent notes</h2>
+    </div>
+  </div>
+</div>
+
+<% end %>
 
 <% unless @related_tags.blank? %>
 
 <div class="ui segment" style="padding:0; margin:0; border:0;">
   <div class="right ui rail">
-    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:15px;">
+    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:100px;">
       <h3 class="ui header">Related tags</h3>
       <% for tag in @related_tags %>
       <p style="line-height: 1em;">
@@ -59,8 +81,8 @@ trix-toolbar {
 
 <div class="ui segment" style="padding:0; margin:0; border:0;">
   <div class="right ui rail">
-    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:15px;">
-      <h3 class="ui header">Popular tags</h3>
+    <div class="ui sticky" style="min-width: 272px !important; min-height: 262.531px !important; left: 1034px; padding-top:100px;">
+      <h4 class="ui header">Popular tags</h4>
       <% for tag in @tags %>
       <p style="line-height: 1em;">
         <a href="<%= build_tag_url(params, tag.name, current_user) %>"><%= tag.name %></a>

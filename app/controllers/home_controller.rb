@@ -2,7 +2,8 @@ class HomeController < ApplicationController
     
   # GET /
   def index
-    @tags = Memo.all.where(public: 1).tag_counts_on(:tags).to_a.shuffle
+    @memos = Memo.all.where(public: 1).order(updated_at: :desc)
+    @tags = @memos.tag_counts_on(:tags).to_a.shuffle
   end
   
   def sorry
