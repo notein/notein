@@ -1,6 +1,13 @@
-# NoteIn
+# NoteIn: Federated Note Sharing
 
-Alpha version, still WIP!
+NoteIn enables federated note-taking and sharing.
+Federation is done using the [ActivityPub](https://activitypub.rocks/) protocol,
+which is used by Mastodon, PeerTube], and more. Through ActivityPub NoteIn can interact with these platforms, as well as other instances of NoteIn. 
+
+**_Please note this is alpha software, not recommended for production use,
+and federation is not supported yet._**
+
+The following setup instructions are intended for testing and development.
 
 ## Start in development mode
 
